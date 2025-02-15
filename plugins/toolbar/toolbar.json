@@ -1,0 +1,4 @@
+{
+    "name": "IToolbar",
+    "dependencies": ["IMenuBar"]
+}

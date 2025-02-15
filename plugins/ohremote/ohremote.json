@@ -1,0 +1,4 @@
+{
+    "name": "OhRemote",
+    "dependencies": ["IToolbar"]
+}

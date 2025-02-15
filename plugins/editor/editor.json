@@ -1,0 +1,4 @@
+{
+    "name": "IEditor",
+    "dependencies": ["IMenuBar", "IToolbar"]
+}
