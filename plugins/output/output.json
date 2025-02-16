@@ -1,4 +1,4 @@
 {
     "name": "IOutput",
-    "dependencies": ["IMenuBar"]
+    "dependencies": ["IMenuBar", "IStatusBar"]
 }

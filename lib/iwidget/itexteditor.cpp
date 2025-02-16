@@ -1,7 +1,6 @@
 #include "itexteditor.h"
 #include <QPainter>
 #include <QTextBlock>
-#include "dockerfilesyntaxhighlighter.h"
 class LineNumberArea : public QWidget {
 public:
     LineNumberArea(ITextEditor *editor)

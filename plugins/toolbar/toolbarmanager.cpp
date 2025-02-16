@@ -3,11 +3,11 @@
 #include <QButtonGroup>
 #include <QVBoxLayout>
 #include <QToolButton>
-#include <QTabWidget>
 #include <QTabBar>
 #include "iwindow.h"
 #include "iwidget.h"
 #include "pluginmanager.h"
+#include "icentralwidget.h"
 #include "qevent.h"
 #include "qmenu.h"
 #include "menubarmanager.h"
@@ -18,15 +18,13 @@ class ToolBarManagerPrivate
 public:
     ToolBarManagerPrivate()
         :toolBar(new ToolBar),
-        tabWidget(new QTabWidget)
+        centralWidget(new ICentralWidget)
     {
-        QTabBar *tabBar = tabWidget->tabBar();
-        tabBar->hide();
-        toolBar->setTable(tabWidget);
-        IWindow::addCentralWidget(tabWidget);
+        toolBar->setCentralWidget(centralWidget);
+        IWindow::addCentralWidget(centralWidget);
     }
     ToolBar *toolBar = nullptr;
-    QTabWidget *tabWidget = nullptr;
+    ICentralWidget * centralWidget = nullptr;
     QHash<int, QAction *> actions;
 };
 
@@ -74,7 +72,7 @@ public:
         layout->addItem(spacer);
     }
     QButtonGroup *buttonGroup = nullptr;
-    QTabWidget *tabWidget = nullptr;
+    ICentralWidget *centralWidget = nullptr;
     QMenu *contextMenu = nullptr;
 private:
     QVBoxLayout *layout = new QVBoxLayout;
@@ -101,16 +99,18 @@ ToolBar::ToolBar():
 
 }
 
-void ToolBar::setTable(QTabWidget *tabWidget)
+void ToolBar::setCentralWidget(ICentralWidget *centralWidget)
 {
-    if(m_p->tabWidget)
+    if(m_p->centralWidget)
     {
-        QAbstractButton::disconnect(m_p->buttonGroup, &QButtonGroup::idClicked, m_p->tabWidget, &QTabWidget::setCurrentIndex);
+        QAbstractButton::disconnect(m_p->buttonGroup, &QButtonGroup::idClicked,
+                                    m_p->centralWidget, &QTabWidget::setCurrentIndex);
     }
-    m_p->tabWidget = tabWidget;
-    if(m_p->tabWidget)
+    m_p->centralWidget = centralWidget;
+    if(m_p->centralWidget)
     {
-        QAbstractButton::connect(m_p->buttonGroup, &QButtonGroup::idClicked, m_p->tabWidget, &QTabWidget::setCurrentIndex);
+        QAbstractButton::connect(m_p->buttonGroup, &QButtonGroup::idClicked,
+                                 m_p->centralWidget, &QTabWidget::setCurrentIndex);
     }
 }
 
@@ -133,6 +133,12 @@ QAction *ToolBar::addAction(IWidget *page)
 void ToolBar::contextMenuEvent(QContextMenuEvent *event)
 {
     m_p->contextMenu->exec(event->globalPos());
+}
+
+void ToolBar::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event)
+    emit ToolBarMgr->toolBarSizeChanged(size());
 }
 
 void ToolBar::toolBarShowOrHide()
@@ -170,10 +176,15 @@ bool ToolBarManager::isVisible()
 void ToolBarManager::bindWidget(IWidget *page)
 {
     ToolBarMgr->m_p->actions.insert(page->index(),ToolBarMgr->m_p->toolBar->addAction(page));
-    ToolBarMgr->m_p->tabWidget->insertTab(page->index(), page, page->windowTitle());
+    ToolBarMgr->m_p->centralWidget->insertTab(page->index(), page, page->windowTitle());
 }
 
 void ToolBarManager::setUpToolBar()
 {
     IWindow::setToolBar(Qt::ToolBarArea::LeftToolBarArea, ToolBarMgr->toolBar());
+}
+
+QSize ToolBarManager::size()
+{
+    return ToolBarMgr->m_p->toolBar->size();
 }

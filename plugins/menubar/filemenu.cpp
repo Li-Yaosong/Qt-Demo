@@ -1,6 +1,5 @@
 #include "filemenu.h"
 #include "iwindow.h"
-#include "menubarmanager.h"
 #include <QStyle>
 #include <QApplication>
 #include <QFileDialog>
@@ -11,20 +10,20 @@ FileMenu::FileMenu(QWidget *parent)
     setTitle(tr("&File"));
     QAction *openAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_DialogOpenButton),
                                       tr("&Open"), this);
-    openAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
+    openAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
     IWindow::instance()->addAction(openAction);
     connect(openAction, &QAction::triggered, this, &FileMenu::onOpenFile);
     addAction(openAction);
 
     QAction *saveAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_DialogSaveButton),
                                       tr("&Save"), this);
-    saveAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+    saveAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_S));
     IWindow::instance()->addAction(saveAction);
     connect(saveAction, &QAction::triggered, this, &FileMenu::onSaveFile);
     addAction(saveAction);
     QAction *exitAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_TitleBarCloseButton),
                                       tr("&Exit"), this);
-    exitAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q));
+    exitAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_Q));
     IWindow::instance()->addAction(exitAction);
     connect(exitAction, &QAction::triggered, IWindow::instance(), &IWindow::close);
     addAction(exitAction);

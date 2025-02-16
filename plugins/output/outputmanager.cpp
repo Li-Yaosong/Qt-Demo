@@ -6,6 +6,7 @@
 #include <QPlainTextEdit>
 #include "viewmenu.h"
 #include "menubarmanager.h"
+#include "statusbarmanager.h"
 InstancePtr(OutputManager)
 class OutputWidgetPrivate;
 class OutputWidget : public QDockWidget
@@ -30,6 +31,7 @@ public:
     {
         Q_UNUSED(q_ptr)
         m_outputWidget->setFeatures(QDockWidget::NoDockWidgetFeatures);
+        StatusBarMgr->bindDockWidget(m_outputWidget);
     }
     OutputWidget *outputWidget()
     {

@@ -5,6 +5,7 @@
 #include <QMainWindow>
 
 #include "defstruct.h"
+class ICentralWidget;
 class IWIDGET_EXPORT IWindow : public QMainWindow
 {
     Q_OBJECT
@@ -17,8 +18,16 @@ public:
     static void closeWindow();
     static void setToolBar(Qt::ToolBarArea area, QToolBar *toolbar);
     static void addMenuBar(QMenuBar *menuBar);
-    static void addCentralWidget(QWidget *widget);
+    static void addCentralWidget(ICentralWidget *widget);
     static void addStatusBar(QStatusBar *statusBar);
+Q_SIGNALS:
+    void resizeWindow(const QSize &);
+    void resizeCentralWidget(const QSize &);
+    // QWidget interface
+protected:
+    void resizeEvent(QResizeEvent *event);
+
+
 };
 
 #endif // IWINDOW_H

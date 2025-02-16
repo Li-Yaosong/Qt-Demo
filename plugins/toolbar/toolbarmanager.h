@@ -6,7 +6,7 @@
 #include "defstruct.h"
 class QToolBar;
 class QAction;
-class QTabWidget;
+class ICentralWidget;
 class IWidget;
 class ToolBarPrivate;
 class TOOLBAR_EXPORT ToolBar : public QToolBar
@@ -14,15 +14,22 @@ class TOOLBAR_EXPORT ToolBar : public QToolBar
     Q_OBJECT
 public:
     ToolBar();
-    void setTable(QTabWidget *tabWidget);
+    void setCentralWidget(ICentralWidget *centralWidget);
     QAction *addAction(IWidget *page);
     void contextMenuEvent(QContextMenuEvent *event);
+
+protected:
+    void resizeEvent(QResizeEvent *event);
 private Q_SLOTS:
     void toolBarShowOrHide();
     void setIconOnly();
     void setIconAndText();
+
 private:
     ToolBarPrivate * const m_p;
+
+    // QWidget interface
+
 };
 class IWidget;
 class ToolBarManagerPrivate;
@@ -40,6 +47,9 @@ public:
     static void setVisible(bool visible);
     static bool isVisible();
     static void setUpToolBar();
+    static QSize size();
+Q_SIGNALS:
+    void toolBarSizeChanged(QSize);
 private:
     static void bindWidget(IWidget *page);
     ToolBarManagerPrivate * const m_p;

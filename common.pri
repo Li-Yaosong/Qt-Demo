@@ -6,6 +6,7 @@ IPLUGINS += \
     editor \
     toolbar \
     menubar \
+    statusbar \
     output
 
 !isEmpty(DEPEND_PLUGINS) {

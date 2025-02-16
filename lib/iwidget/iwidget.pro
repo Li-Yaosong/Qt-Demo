@@ -11,21 +11,17 @@ CONFIG += c++17
 DESTDIR = $${lib_dir}/$${TARGET}
 
 INCLUDEPATH += \
-    $${top_dir}/app \
-    $${top_dir}/lib/dockerfileparser
-
-LIBS += \
-    -L$${lib_dir}/dockerfileparser
-
-LIBS += -ldockerfileparser
+    $${top_dir}/app
 
 SOURCES += \
+    icentralwidget.cpp \
     imenu.cpp \
     itexteditor.cpp \
     iwidget.cpp \
     iwindow.cpp
 
 HEADERS += \
+    icentralwidget.h \
     imenu.h \
     itexteditor.h \
     iwidget_global.h \
