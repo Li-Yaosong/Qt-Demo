@@ -1,0 +1,12 @@
+[submodule "lib/3rdparty/qtermwidget"]
+	path = lib/3rdparty/qtermwidget
+	url = https://github.com/Li-Yaosong/qtermwidget.git
+	branch = dev
+[submodule "lib/3rdparty/qsourcehighlite"]
+	path = lib/3rdparty/qsourcehighlite
+	url = https://github.com/Li-Yaosong/QSourceHighlite.git
+        branch = dev
+[submodule "lib/3rdparty/qfonticon"]
+        path = lib/3rdparty/qfonticon
+	url = https://github.com/Li-Yaosong/QFontIcon.git
+	branch = dev
