@@ -12,6 +12,7 @@
 #include "qmenu.h"
 #include "menubarmanager.h"
 #include "viewmenu.h"
+#include <QApplication>
 InstancePtr(ToolBarManager)
 class ToolBarManagerPrivate
 {
@@ -23,6 +24,11 @@ public:
         toolBar->setCentralWidget(centralWidget);
         IWindow::addCentralWidget(centralWidget);
     }
+    ~ToolBarManagerPrivate()
+    {
+        delete toolBar;
+        delete centralWidget;
+    }
     ToolBar *toolBar = nullptr;
     ICentralWidget * centralWidget = nullptr;
     QHash<int, QAction *> actions;
@@ -31,11 +37,11 @@ public:
 ToolBarManager::ToolBarManager()
     :m_p(new ToolBarManagerPrivate)
 {
-
+    connect(qApp, &QApplication::aboutToQuit, this, &ToolBarManager::destroy);
 }
 ToolBarManager::~ToolBarManager()
 {
-
+    delete m_p;
 }
 class ToolBarPrivate
 {
@@ -158,9 +164,9 @@ void ToolBar::setIconAndText()
     setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 }
 
-ToolBar *ToolBarManager::toolBar()
+void ToolBarManager::setActiveWidget(int index)
 {
-    return m_p->toolBar;
+    ToolBarMgr->m_p->toolBar->m_p->buttonGroup->button(index)->click();
 }
 
 void ToolBarManager::setVisible(bool visible)
@@ -181,10 +187,16 @@ void ToolBarManager::bindWidget(IWidget *page)
 
 void ToolBarManager::setUpToolBar()
 {
-    IWindow::setToolBar(Qt::ToolBarArea::LeftToolBarArea, ToolBarMgr->toolBar());
+    IWindow::setToolBar(Qt::ToolBarArea::LeftToolBarArea, ToolBarMgr->m_p->toolBar);
 }
 
 QSize ToolBarManager::size()
 {
     return ToolBarMgr->m_p->toolBar->size();
+}
+
+void ToolBarManager::destroy()
+{
+    qDebug() << "ToolBarManager::destroy";
+    delete ToolBarMgr;
 }

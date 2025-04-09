@@ -6,6 +6,7 @@
 
 #include "defstruct.h"
 class ICentralWidget;
+class IWindowPrivate;
 class IWIDGET_EXPORT IWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,14 +21,26 @@ public:
     static void addMenuBar(QMenuBar *menuBar);
     static void addCentralWidget(ICentralWidget *widget);
     static void addStatusBar(QStatusBar *statusBar);
+#if QT_CONFIG(dockwidget)
+    void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockwidget);
+    void addDockWidget(Qt::DockWidgetArea area, QDockWidget *dockwidget,
+                       Qt::Orientation orientation);
+#endif
+    void setBottomDockWidgetDefaultHeight(int height, Qt::DockWidgetArea area = Qt::BottomDockWidgetArea);
 Q_SIGNALS:
     void resizeWindow(const QSize &);
     void resizeCentralWidget(const QSize &);
-    // QWidget interface
 protected:
     void resizeEvent(QResizeEvent *event);
 
 
+private:
+    friend class IApplicationPrivate;
+    IWindowPrivate * const m_p = nullptr;
+
+    // QObject interface
+public:
+    bool event(QEvent *event);
 };
 
 #endif // IWINDOW_H

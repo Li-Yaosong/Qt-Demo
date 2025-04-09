@@ -1,5 +1,6 @@
 #include "statusbarmanager.h"
 #include "iwindow.h"
+#include <QDockWidget>
 #include "statusbar.h"
 InstancePtr(StatusBarManager)
 
@@ -10,11 +11,12 @@ public:
         : statusBar(new StatusBar),
         q_ptr(q)
     {
-        Q_UNUSED(q_ptr)
+        Q_UNUSED(q_ptr);
     }
     StatusBar *statusBar = nullptr;
+
 private:
-    StatusBarManager *q_ptr;
+    StatusBarManager *q_ptr = nullptr;
 };
 
 StatusBarManager::StatusBarManager()
@@ -38,4 +40,5 @@ void StatusBarManager::setUpStatusBar()
 void StatusBarManager::bindDockWidget(QDockWidget *dockWidget, int index)
 {
     StatusBarMgr->m_p->statusBar->bindDockWidget(dockWidget, index);
+    dockWidget->setTitleBarWidget(new QWidget());
 }

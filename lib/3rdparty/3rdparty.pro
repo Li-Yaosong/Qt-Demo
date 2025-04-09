@@ -2,4 +2,8 @@ TEMPLATE = subdirs
 CONFIG += ordered
 
 SUBDIRS += \
-    # qscintilla
+    qsourcehighlite \
+    qfonticon \
+    qtermwidget \
+    libptyqt \
+    qcodeeditor

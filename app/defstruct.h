@@ -1,4 +1,4 @@
-﻿#ifndef DEFSTRUCT_H
+#ifndef DEFSTRUCT_H
 #define DEFSTRUCT_H
 #include <QString>
 #include <QVector>
@@ -6,10 +6,7 @@
 #define Instance(type) \
 public: \
     static  type *instance(){ \
-        if (m_instance == nullptr){ \
-            if (m_instance == nullptr){ \
-                m_instance = new type();}} \
-        return m_instance;} \
+        return m_instance ? m_instance : (m_instance = new type());} \
     static void deleteInstance(){ \
         if (m_instance){ \
             delete m_instance; \

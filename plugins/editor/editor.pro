@@ -13,6 +13,8 @@ DEPENDS += iplugin iwidget
 
 DEPEND_PLUGINS += toolbar menubar
 
+3RDPARTY += qsourcehighlite qcodeeditor
+
 include($$common)
 SOURCES += \
     editorpage.cpp \

@@ -9,8 +9,11 @@ class StatusBar : public QStatusBar
     Q_OBJECT
 public:
     StatusBar();
-    void bindDockWidget(QDockWidget *dockWidget, int index = 0);
+    void bindDockWidget(QDockWidget *dockWidget, int index = -1);
     void setDefaultShowDockWidget(int index);
+
+Q_SIGNALS:
+    void dockWidgetChanged(QDockWidget *dockWidget);
     // QWidget interface
 protected:
     void paintEvent(QPaintEvent *event);

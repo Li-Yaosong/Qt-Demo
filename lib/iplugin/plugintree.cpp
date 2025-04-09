@@ -44,6 +44,18 @@ IPluginLoader::IPluginLoader(const QString &fileName, QObject *parent)
     }
 }
 
+IPluginLoader::~IPluginLoader()
+{
+    // 释放插件资源
+    if (isLoaded())
+    {
+        delete instance();
+        unload();
+    }
+    // 释放插件对象
+    qDebug() << QString(tr("IPluginLoader.%1 %2 unloaded plugin.")).arg(m_name, fileName());
+}
+
 QString IPluginLoader::name() const
 {
     return m_name;
@@ -69,24 +81,6 @@ void IPluginLoader::setInitialized(bool initialized)
 }
 
 
-PluginTreeView::PluginTreeView(QWidget *parent)
-    : QTreeView(parent),
-    m_model(new PluginTreeModel(this))
-{
-    setModel(m_model);
-    setAlternatingRowColors(true);
-}
-
-void PluginTreeView::addPlugin(IPluginLoader *plugin)
-{
-    m_model->addPlugin(plugin);
-}
-
-QVector<IPluginLoader *> PluginTreeView::plugins() const
-{
-    return m_model->m_plugins;
-}
-
 PluginTreeModel::PluginTreeModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
@@ -95,7 +89,10 @@ PluginTreeModel::PluginTreeModel(QObject *parent)
 
 PluginTreeModel::~PluginTreeModel()
 {
-
+    for (IPluginLoader *plugin : std::as_const(m_plugins)) {
+        delete plugin;
+    }
+    m_plugins.clear();
 }
 
 void PluginTreeModel::addPlugin(IPluginLoader *plugin)
@@ -122,10 +119,6 @@ QVariant PluginTreeModel::data(const QModelIndex &index, int role) const
         return QVariant();
 
     const IPluginLoader &item = *static_cast<IPluginLoader *>(index.internalPointer());
-    // 将 QJsonArray 包装到 QJsonDocument，然后转为 JSON 格式的字符串
-    QJsonDocument doc(QJsonArray::fromVariantList(item.dependencies()));
-    // ;
-    // return QString(doc.toJson(QJsonDocument::Compact));
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
         case 0: return item.name();          // 显示插件名称

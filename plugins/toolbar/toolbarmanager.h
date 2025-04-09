@@ -17,7 +17,6 @@ public:
     void setCentralWidget(ICentralWidget *centralWidget);
     QAction *addAction(IWidget *page);
     void contextMenuEvent(QContextMenuEvent *event);
-
 protected:
     void resizeEvent(QResizeEvent *event);
 private Q_SLOTS:
@@ -26,10 +25,8 @@ private Q_SLOTS:
     void setIconAndText();
 
 private:
+    friend class ToolBarManager;
     ToolBarPrivate * const m_p;
-
-    // QWidget interface
-
 };
 class IWidget;
 class ToolBarManagerPrivate;
@@ -37,17 +34,18 @@ class TOOLBAR_EXPORT ToolBarManager : public QObject
 {
     Q_OBJECT
     Instance(ToolBarManager)
-    ToolBar *toolBar();
 public:
     template <typename T>
     static void registerWidget()
     {
         ToolBarManager::bindWidget(new T());
     }
+    static void setActiveWidget(int index);
     static void setVisible(bool visible);
     static bool isVisible();
     static void setUpToolBar();
     static QSize size();
+    static void destroy();
 Q_SIGNALS:
     void toolBarSizeChanged(QSize);
 private:

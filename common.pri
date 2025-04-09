@@ -1,6 +1,7 @@
 ILIBS += \
     iplugin \
-    iwidget
+    iwidget \
+    hdc
 
 IPLUGINS += \
     editor \
@@ -33,11 +34,37 @@ plugin {
     DISTFILES += \
         $$PWD/plugins/$${TARGET}/$${TARGET}.json
 }
+else {
+    DESTDIR = $${lib_dir}/$${TARGET}
+}
 
-# contains(3RDPARTY, qscintilla) {
-#     INCLUDEPATH +=  \
-#         $${top_dir}/lib/3rdparty/qscintilla \
-#         $${top_dir}/lib/3rdparty/qscintilla/Qsci
+contains(3RDPARTY, qsourcehighlite) {
+    INCLUDEPATH +=  \
+        $${top_dir}/lib/3rdparty/qsourcehighlite
 
-#     LIBS += -L$${lib_dir}/qscintilla -lqscintilla
-# }
+    LIBS += -L$${lib_dir}/qsourcehighlite -lqsourcehighlite
+}
+
+contains(3RDPARTY, qtermwidget) {
+    INCLUDEPATH +=  \
+        $${top_dir}/lib/3rdparty/qtermwidget \
+        $${top_dir}/lib/3rdparty/qtermwidget/lib
+
+    LIBS += -L$${lib_dir}/qtermwidget -lqtermwidget -ladvapi32
+}
+
+contains(3RDPARTY, libptyqt) {
+    INCLUDEPATH +=  \
+        $${top_dir}/lib/3rdparty/libptyqt
+
+    LIBS += -L$${lib_dir}/libptyqt -llibptyqt -ladvapi32
+}
+
+contains(3RDPARTY, qcodeeditor) {
+    INCLUDEPATH +=  \
+        $${top_dir}/lib/3rdparty/qcodeeditor \
+        $${top_dir}/lib/3rdparty/qcodeeditor/include \
+        $${top_dir}/lib/3rdparty/qcodeeditor/include/internal
+
+    LIBS += -L$${lib_dir}/qcodeeditor -lqcodeeditor
+}

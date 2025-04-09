@@ -12,7 +12,7 @@ class STATUSBAR_EXPORT StatusBarManager : public QObject
     Instance(StatusBarManager)
 public:
     static void setUpStatusBar();
-    static void bindDockWidget(QDockWidget *dockWidget, int index = 0);
+    static void bindDockWidget(QDockWidget *dockWidget, int index = -1);
 private:
     StatusBarManagerPrivate * const m_p;
 };

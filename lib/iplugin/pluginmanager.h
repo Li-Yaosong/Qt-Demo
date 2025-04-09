@@ -1,52 +1,34 @@
 #ifndef PLUGINMANAGER_H
 #define PLUGINMANAGER_H
 #include "iplugin_global.h"
-
-#include <QDialog>
+#include "defstruct.h"
 #include <QFileInfo>
 class IPluginLoader;
 class OutputWidget;
-class PluginTreeView;
-
+class PluginTreeModel;
+class QPlainTextEdit;
 class PluginManagerPrivate;
-class IPLUGIN_EXPORT PluginManager : public QDialog
+class IPLUGIN_EXPORT PluginManager : public QObject
 {
     Q_OBJECT
     friend class PluginManagerPrivate;
-    friend class OutputWidget;
+    Instance(PluginManager)
 public:
-    static PluginManager *instance();
     /**
      * @brief addPlugins 添加插件
      * @param plugins 插件列表
      */
     static void addPlugins(const QFileInfoList &plugins);
-    PluginManager();
-
     /**
      * @brief loadPlugins 加载插件
      */
     static void loadPlugins();
-private:
-    /**
-     * @brief outputWidget 输出窗口
-     * @return
-     */
-    static QWidget *outputWidget();
-    static PluginTreeView *pluginTreeView();
-    /**
-     * @brief loadPlugin 加载插件
-     * @param pluginInfo 插件信息
-     */
-    static void loadPlugin(IPluginLoader *pluginInfo);
-    /**
-     * @brief initializePlugin 初始化插件
-     * @param pluginLoader 插件信息
-     */
-    static void initializePlugin(IPluginLoader *pluginLoader);
+    QStringList previousMessages();
+    const PluginTreeModel *pluginTreeModel();
 Q_SIGNALS:
     void pluginLoaded(const IPluginLoader *plugin);
     void pluginsLoaded();
+    void outputMessage(const QString &message);
 private:
     PluginManagerPrivate *m_p = nullptr;
 };

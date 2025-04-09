@@ -8,6 +8,7 @@ class IWIDGET_EXPORT ICentralWidget : public QTabWidget
     Q_OBJECT
 public:
     ICentralWidget();
+    ~ICentralWidget();
 
 Q_SIGNALS:
     void resizeWindow(const QSize &);

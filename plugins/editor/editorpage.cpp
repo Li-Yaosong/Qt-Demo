@@ -8,6 +8,8 @@
 #include "itexteditor.h"
 #include "menubarmanager.h"
 #include "filemenu.h"
+#include "qsourcehighliter.h"
+#include <QCXXHighlighter>
 class EditorPagePrivate
 {
 public:
@@ -46,7 +48,6 @@ EditorPage::EditorPage(IWidget *parent)
     setLayout(layout);
     connect(MenuBarManager::menu<FileMenu>(), &FileMenu::sendFile, this, &EditorPage::onReceiveFile);
     connect(MenuBarManager::menu<FileMenu>(), &FileMenu::saveFile, this, &EditorPage::onSaveFile);
-
 }
 
 QIcon EditorPage::icon() const
@@ -76,6 +77,63 @@ void EditorPage::onReceiveFile(QFile &file)
     // m_p->editor->setMarginLineNumbers(0, true);
     // m_p->editor->setMarginWidth(0,40);
     file.close();
+    if(file.fileName().endsWith(".cpp"))
+    {
+        m_p->editor->setHighlighter(new QCXXHighlighter);
+        // (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+        //     ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeCpp);
+    }
+    else if(file.fileName().endsWith(".h"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeCpp);
+    }
+    else if(file.fileName().endsWith(".py"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodePython);
+    }
+    else if(file.fileName().endsWith(".java"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeJava);
+    }
+    else if(file.fileName().endsWith(".css"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeCSS);
+    }
+    else if(file.fileName().endsWith(".js"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeTypeScript);
+    }
+    else if(file.fileName().endsWith(".xml"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeXML);
+    }
+    else if(file.fileName().endsWith(".json"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeJSON);
+    }
+    else if(file.fileName().endsWith(".sql"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeSQL);
+    }
+    else if(file.fileName().endsWith(".sh"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeBash);
+    }
+    else if(file.fileName().endsWith(".bat"))
+    {
+        (new QSourceHighlite::QSourceHighliter(m_p->editor->document()))
+            ->setCurrentLanguage(QSourceHighlite::QSourceHighliter::CodeBash);
+    }
+    ToolBarManager::setActiveWidget(index());
 }
 
 void EditorPage::onSaveFile(QFile &file)

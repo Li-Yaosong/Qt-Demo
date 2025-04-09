@@ -1,7 +1,6 @@
 #ifndef PLUGINTREE_H
 #define PLUGINTREE_H
 
-#include <QTreeView>
 #include <QAbstractItemModel>
 #include <QVariant>
 #include <QPluginLoader>
@@ -16,7 +15,7 @@ class IPluginLoader : public QPluginLoader
 public:
     explicit IPluginLoader(QObject *parent = nullptr);
     explicit IPluginLoader(const QString &fileName, QObject *parent = nullptr);
-    ~IPluginLoader() = default;
+    ~IPluginLoader();
 
     QString name() const;
 
@@ -34,17 +33,11 @@ private:
     bool m_initialized = false;
 };
 
-// struct PluginItem {
-//     QString name = "";
-//     QStringList dependencies = {};
-//     QPluginLoader *loader = nullptr;
-//     bool initialized = false;
-// };
 class PluginTreeModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    friend class PluginTreeView;
+    friend class PluginManager;
     explicit PluginTreeModel(QObject *parent = nullptr);
     ~PluginTreeModel();
 
@@ -59,21 +52,6 @@ public:
 
 private:
     QVector<IPluginLoader *> m_plugins;
-};
-
-class PluginTreeView : public QTreeView
-{
-public:
-    explicit PluginTreeView(QWidget *parent = nullptr);
-    ~PluginTreeView() = default;
-    void addPlugin(IPluginLoader *plugin);
-
-    QVector<IPluginLoader *> plugins() const;
-
-
-
-private:
-    PluginTreeModel *m_model = nullptr;
 };
 
 #endif // PLUGINTREE_H

@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui concurrent
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,13 +15,17 @@ INCLUDEPATH += \
 
 LIBS += \
     -L$${lib_dir}/iplugin \
-    -L$${lib_dir}/iwidget
+    -L$${lib_dir}/iwidget \
+    -L$${lib_dir}/hdc  \
+    -L$${lib_dir}/qtermwidget
 
 LIBS += -liplugin -liwidget
 SOURCES += \
+    iapplication.cpp \
     main.cpp
 
 HEADERS += \
+    iapplication.h \
     defstruct.h
 
 TRANSLATIONS += \

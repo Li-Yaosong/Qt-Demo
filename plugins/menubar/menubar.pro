@@ -34,5 +34,5 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    menubar.json
+RESOURCES += \
+    menubar.qrc

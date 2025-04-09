@@ -3,31 +3,39 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <iwindow.h>
+#include <QVBoxLayout>
+#include <QTreeView>
 #include "pluginmanager.h"
+#include "plugintree.h"
 HelpMenu::HelpMenu(QWidget *parent)
     : IMenu(parent)
 {
     IMenuFactory::registerMenu(this);
     setTitle(tr("&Help"));
-    QAction *aboutPluginAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation),
-                                             tr("&About Plugin"), this);
-    // IWindow::instance()->addAction(aboutPluginAction);
-    PluginManager::instance()->setParent(IWindow::instance(), Qt::WindowType::Dialog);
-    connect(aboutPluginAction, &QAction::triggered, PluginManager::instance(), &PluginManager::show);
-    addAction(aboutPluginAction);
-    QAction *aboutAction = new QAction(QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation),
-                                       tr("&About"), this);
-    // IWindow::instance()->addAction(aboutAction);
-    connect(aboutAction, &QAction::triggered, this, &HelpMenu::onAbout);
-    addAction(aboutAction);
+    IWindow *window = IWindow::instance();
+    QDialog *pluginDialog = new QDialog(window);
+    pluginDialog->setVisible(false);
+    QVBoxLayout *layout = new QVBoxLayout;
+    pluginDialog->setLayout(layout);
+
+    QTreeView *m_pluginTree = new QTreeView(pluginDialog);
+    m_pluginTree->setModel(const_cast<PluginTreeModel *>(PluginManager::instance()->pluginTreeModel()));
+    m_pluginTree->setAlternatingRowColors(true);
+
+    layout->addWidget(m_pluginTree);
+    QIcon aboutIcon = QApplication::style()->standardIcon(QStyle::SP_MessageBoxInformation);
+    QFile aboutFile(":/about");
+    QString aboutText;
+    if (aboutFile.open(QIODevice::ReadOnly))
+    {
+        aboutText = QString::fromUtf8(aboutFile.readAll());
+        aboutFile.close();
+    }
+    addAction(aboutIcon, tr("&About Plugin"), pluginDialog, &QDialog::show);
+    addAction(aboutIcon, tr("&About"), this, std::bind(&QMessageBox::about, window, tr("About"), aboutText));
 }
 
 QString HelpMenu::type()
 {
     return metaObject()->className();
-}
-
-void HelpMenu::onAbout()
-{
-    QMessageBox::about(IWindow::instance(), tr("About"), tr("This is a simple text editor"));
 }

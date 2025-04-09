@@ -1,17 +1,14 @@
-QT       += core widgets
+QT       += core
 
 CONFIG += c++17
 TEMPLATE = lib
 DEFINES += IPLUGIN_LIBRARY
-DESTDIR = $${lib_dir}/$$TARGET
-INCLUDEPATH += \
-    $${top_dir}/app
+include($$common)
 
 HEADERS += \
     iplugin.h \
     iplugin_global.h \
     pluginmanager.h \
-    pluginmanager_p.h \
     plugintree.h
 
 SOURCES += \

@@ -5,6 +5,7 @@ SUBDIRS += \
     toolbar \
     statusbar \
     output \ 
+    terminal \
     welcome \
     editor \
     ohremote
