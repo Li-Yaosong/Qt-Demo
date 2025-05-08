@@ -12,7 +12,7 @@ public:
         if(q_ptr)
             q_ptr->setWidget(terminalTabWidget);
         TerminalWidget *terminalWidget = new TerminalWidget(LocalShell, q_ptr);
-        terminalWidget->setTerminalFont(QFont("Consolas", 12, QFont::Bold));
+        terminalWidget->setTerminalFont(QFont("Consolas", 10, QFont::Bold));
         terminalWidget->setBackgroundColor(Qt::black);
         terminalWidget->setForegroundColor(Qt::red);
         // terminalWidget->setMargin(5);

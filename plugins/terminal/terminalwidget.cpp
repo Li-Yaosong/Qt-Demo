@@ -7,12 +7,12 @@
 class TerminalWidgetPrivate
 {
 public:
-    TerminalWidgetPrivate(TerminalWidget *q)
+    explicit TerminalWidgetPrivate(TerminalWidget *q)
         : q_ptr(q)
     {
         Q_UNUSED(q_ptr);
     }
-    IPtyProcess *localShell;
+    IPtyProcess *localShell = nullptr;
 private:
     TerminalWidget *q_ptr = nullptr;
 };
@@ -23,7 +23,7 @@ TerminalWidget::TerminalWidget(TerminalType type, QWidget *parent)
 {
     setScrollBarPosition(QTermWidget::ScrollBarRight);
     setBlinkingCursor(true);
-    setMargin(0);
+    setMargin(5, 3);
     setDrawLineChars(false);
     setSelectionOpacity(0.5);
     setShowResizeNotificationEnabled(false);
@@ -66,8 +66,8 @@ int TerminalWidget::start(const QString &command, QString profile, ShellType sTp
     QString shellPath;
     QStringList args;
 #if defined(Q_OS_WIN)
-    QString wslUserName = "root";
-    QString wslDistro = "Ubuntu";
+    // QString wslUserName = "root";
+    // QString wslDistro = "Ubuntu";
 
     switch (sTp) {
 #if defined(Q_OS_UNIX)

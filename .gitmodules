@@ -10,3 +10,7 @@
         path = lib/3rdparty/qfonticon
 	url = https://github.com/Li-Yaosong/QFontIcon.git
 	branch = dev
+[submodule "lib/3rdparty/qcodeeditor"]
+	path = lib/3rdparty/qcodeeditor
+	url = https://github.com/Li-Yaosong/QCodeEditor.git
+	branch = dev

@@ -1,11 +1,11 @@
-﻿#include "ohscreendisplay.h"
+#include "ohscreendisplay.h"
 #include "ohscreenmirror.h"
 #include <QElapsedTimer>
 
 class OhScreenDisplayPrivate : public QObject
 {
 public:
-    OhScreenDisplayPrivate(OhScreenDisplay *q)
+    explicit OhScreenDisplayPrivate(OhScreenDisplay *q)
         :m_q(q)
     {
         mirror = new OhScreenMirror(m_q);

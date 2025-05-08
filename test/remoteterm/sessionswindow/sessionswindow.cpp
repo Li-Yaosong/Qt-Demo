@@ -46,7 +46,7 @@ SessionsWindow::SessionsWindow(SessionType tp, QWidget *parent)
 
         term->setScrollBarPosition(QTermWidget::ScrollBarRight);
         term->setBlinkingCursor(true);
-        term->setMargin(0);
+        term->setMargin(0, 2);
         term->setDrawLineChars(false);
         term->setSelectionOpacity(0.5);
         term->setShowResizeNotificationEnabled(false);
